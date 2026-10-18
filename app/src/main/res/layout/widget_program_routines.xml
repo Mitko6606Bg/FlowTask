@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Clickable Header Area (Opens Program in FlowTask) -->
+        <LinearLayout
+            android:id="@+id/widget_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Program Icon in Squircle -->
+            <ImageView
+                android:id="@+id/widget_program_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/widget_icon_container"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_widget_event_repeat" />
+
+            <!-- Title & Subtitle -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/widget_program_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-black"
+                    android:maxLines="1"
+                    android:text="@string/widget_program_routines_title"
+                    android:textColor="@color/widget_text_primary"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/widget_program_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:textColor="@color/widget_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Settings / Program Selector Button -->
+        <ImageButton
+            android:id="@+id/widget_button_settings"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/widget_button_secondary"
+            android:contentDescription="@string/widget_select_program"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_settings" />
+    </LinearLayout>
+
+    <!-- Day Coverage / Dot Timeline Bar -->
+    <LinearLayout
+        android:id="@+id/widget_day_coverage_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Dot indicators for today's routine progress / density -->
+        <LinearLayout
+            android:id="@+id/widget_dots_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/widget_dot_1"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@null"
+                android:src="@drawable/widget_dot_active" />
+
+            <ImageView
+                android:id="@+id/widget_dot_2"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@null"
+                android:src="@drawable/widget_dot_future" />
+
+            <ImageView
+                android:id="@+id/widget_dot_3"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@null"
+                android:src="@drawable/widget_dot_future" />
+
+            <ImageView
+                android:id="@+id/widget_dot_4"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@null"
+                android:src="@drawable/widget_dot_future" />
+
+            <ImageView
+                android:id="@+id/widget_dot_5"
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="@null"
+                android:src="@drawable/widget_dot_future" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/widget_coverage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textColor="@color/widget_text_secondary"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- Main Content Area: Focus Card + Today's Other Routines or Empty States -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_weight="1">
+
+        <!-- Routines Container -->
+        <LinearLayout
+            android:id="@+id/widget_routines_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Featured Next Routine Card (Main Focus Container) -->
+            <LinearLayout
+                android:id="@+id/widget_focus_routine_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/widget_focus_background"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp">
+
+                <!-- Time & Day Header -->
+                <TextView
+                    android:id="@+id/focus_routine_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-bold"
+                    android:maxLines="1"
+                    android:textColor="@color/widget_on_accent_container"
+                    android:textSize="12sp" />
+
+                <!-- Bigger Text for Next Routine Title -->
+                <TextView
+                    android:id="@+id/focus_routine_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-black"
+                    android:maxLines="1"
+                    android:textColor="@color/widget_on_accent_container"
+                    android:textSize="16sp" />
+
+                <!-- Location / Room / Note Row -->
+                <LinearLayout
+                    android:id="@+id/focus_routine_room_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_widget_location" />
+
+                    <TextView
+                        android:id="@+id/focus_routine_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Today's Other Routines (ONLY routines occurring on current day) -->
+            <LinearLayout
+                android:id="@+id/widget_today_others_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Other Routine 1 (Today) -->
+                <LinearLayout
+                    android:id="@+id/widget_routine_item_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/widget_item_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp">
+
+                    <ImageView
+                        android:id="@+id/routine_1_bar"
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@null"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/widget_pill_bar" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/routine_1_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:textColor="@color/widget_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/routine_1_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-bold"
+                            android:maxLines="1"
+                            android:textColor="@color/widget_text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/routine_1_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Other Routine 2 (Today) -->
+                <LinearLayout
+                    android:id="@+id/widget_routine_item_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/widget_item_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp">
+
+                    <ImageView
+                        android:id="@+id/routine_2_bar"
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@null"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/widget_pill_bar" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/routine_2_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:textColor="@color/widget_text_secondary"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/routine_2_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-bold"
+                            android:maxLines="1"
+                            android:textColor="@color/widget_text_primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/routine_2_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLines="1"
+                        android:textColor="@color/widget_text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- More count indicator if today has >2 additional routines -->
+                <TextView
+                    android:id="@+id/widget_today_more_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/widget_text_muted"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Empty View (No routines scheduled) -->
+        <LinearLayout
+            android:id="@+id/widget_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_widget_event_repeat" />
+
+            <TextView
+                android:id="@+id/widget_empty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-bold"
+                android:gravity="center"
+                android:text="@string/widget_no_routines_upcoming"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/widget_empty_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/widget_tap_to_view_program"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- No Program Configured View -->
+        <LinearLayout
+            android:id="@+id/widget_no_program_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_widget_settings" />
+
+            <TextView
+                android:id="@+id/widget_no_program_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-bold"
+                android:gravity="center"
+                android:text="@string/widget_select_program"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/widget_no_program_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/widget_no_program_selected"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+</LinearLayout>

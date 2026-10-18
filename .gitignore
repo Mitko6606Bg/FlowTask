@@ -1,0 +1,62 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+app/build/
+
+# Gradle files
+.gradle/
+buildOutputCleanup/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# Android Studio captures folder
+captures/
+
+# IntelliJ IDEA & Android Studio
+*.iml
+.idea/
+.kotlin/
+.agents/
+
+# Native build cache
+.externalNativeBuild
+.cxx
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Keystore files
+*.jks
+*.keystore
+
+# Temporary and recovery artifacts
+jadx/
+jadx.zip
+cfr.jar
+temp_aar/
+decompiled_apk/
+decompiled.java
+ProjectsScreen_restored.kt
+rework_detail.py
+search_prompts.py
+apply_fixes.py
+*.txt

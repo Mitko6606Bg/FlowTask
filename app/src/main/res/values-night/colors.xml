@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Material You Fallback Colors (Dark) -->
+    <color name="widget_background">#262B37</color>
+    <color name="widget_surface">#1B1F27</color>
+    <color name="widget_surface_subtle">#1B1F27</color>
+    <color name="widget_accent">#54D6BC</color>
+    <color name="widget_accent_container">#1A4D43</color>
+    <color name="widget_on_accent">#00382E</color>
+    <color name="widget_on_accent_container">#73F3D8</color>
+    <color name="widget_text_primary">#F8F9FD</color>
+    <color name="widget_text_secondary">#C0C6D4</color>
+    <color name="widget_text_muted">#8B93A7</color>
+    <color name="widget_divider">#3E4658</color>
+</resources>

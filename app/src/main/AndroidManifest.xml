@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FlowTask">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FlowTask"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Quick Create Card-Style Pop-up Activity (Translucent Theme) -->
+        <activity
+            android:name=".ui.quickcreate.QuickCreateActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.FlowTask.TransparentQuickCreate"
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:excludeFromRecents="true"
+            android:autoRemoveFromRecents="true" />
+
+        <!-- Stock Pixel-Aesthetic Today Widget Provider -->
+        <receiver
+            android:name=".widget.TodayWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_today_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.flowtask.app.widget.ACTION_TOGGLE_TASK" />
+                <action android:name="com.flowtask.app.widget.ACTION_OPEN_TASK" />
+                <action android:name="com.flowtask.app.widget.ACTION_UPDATE_WIDGET" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/today_widget_info" />
+        </receiver>
+
+        <!-- Widget ListView RemoteViewsService -->
+        <service
+            android:name=".widget.TodayWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+
+        <!-- Program Routines Widget Configuration Activity -->
+        <activity
+            android:name=".widget.ProgramWidgetConfigureActivity"
+            android:exported="true"
+            android:taskAffinity=""
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.FlowTask.TransparentQuickCreate"
+            android:windowSoftInputMode="adjustResize"
+            android:excludeFromRecents="true"
+            android:autoRemoveFromRecents="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <!-- Program Routines Widget Provider (Google Stock App Style) -->
+        <receiver
+            android:name=".widget.ProgramRoutinesWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_program_routines_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.flowtask.app.widget.ACTION_UPDATE_PROGRAM_WIDGET" />
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/program_routines_widget_info" />
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

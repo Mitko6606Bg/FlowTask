@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Clickable Header Info (Opens Main App) -->
+        <LinearLayout
+            android:id="@+id/widget_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Calendar Icon in Squircle -->
+            <ImageView
+                android:id="@+id/widget_icon"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/widget_icon_container"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_widget_calendar" />
+
+            <!-- Title & Date -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/widget_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="@string/widget_today_title"
+                    android:textColor="@color/widget_text_primary"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/widget_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/widget_text_secondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Count Badge Pill -->
+            <TextView
+                android:id="@+id/widget_count_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/widget_pill_badge"
+                android:fontFamily="sans-serif-bold"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:textColor="@color/widget_on_accent_container"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Quick Create + Button (Isolated touch target -> Launches Floating Overlay) -->
+        <ImageButton
+            android:id="@+id/widget_button_create"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/widget_button_accent"
+            android:contentDescription="@string/widget_create_task"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_add" />
+    </LinearLayout>
+
+    <!-- Tasks List & Empty View Container -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
+
+        <!-- Scrollable Task List -->
+        <ListView
+            android:id="@+id/widget_task_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="6dp"
+            android:scrollbars="none" />
+
+        <!-- Empty State View -->
+        <LinearLayout
+            android:id="@+id/widget_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_widget_done_all" />
+
+            <TextView
+                android:id="@+id/widget_empty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-bold"
+                android:text="@string/widget_empty_title"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/widget_empty_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/widget_empty_subtitle"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

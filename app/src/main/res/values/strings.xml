@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">FlowTask</string>
+    <string name="widget_today_name">FlowTask Today</string>
+    <string name="widget_today_description">View today\'s tasks and quickly create new tasks or projects.</string>
+    <string name="widget_today_title">Today</string>
+    <string name="widget_empty_title">All done for today! 🎉</string>
+    <string name="widget_empty_subtitle">Tap + to create whatever you want</string>
+    <string name="widget_create_task">Create</string>
+    <string name="widget_remaining_format">%1$d left</string>
+    <string name="widget_all_done">All done ✓</string>
+    <string name="widget_program_routines_name">FlowTask Program Routines</string>
+    <string name="widget_program_routines_description">Displays the next 3 routines for a selected program in Google stock style.</string>
+    <string name="widget_program_routines_title">Program Routines</string>
+    <string name="widget_select_program">Select Program</string>
+    <string name="widget_select_program_subtitle">Choose which program to display on this widget</string>
+    <string name="widget_no_routines_upcoming">No upcoming routines</string>
+    <string name="widget_tap_to_view_program">Tap to open program schedule</string>
+    <string name="widget_no_program_selected">Tap ⚙ to select a program</string>
+    <string name="widget_save_for_widget">Save for Widget</string>
+    <string name="widget_now_label">Now</string>
+    <string name="widget_today_label">Today</string>
+    <string name="widget_tomorrow_label">Tomorrow</string>
+    <string name="widget_routines_count_format">%1$d routines / week</string>
+    <string name="widget_no_programs_create_one">No programs created yet</string>
+    <string name="widget_open_program_manager">Open FlowTask to create a program</string>
+    <string name="widget_badge_now">NOW</string>
+    <string name="widget_badge_next">NEXT</string>
+    <string name="widget_coverage_format">%1$s today (%2$d%%)</string>
+    <string name="widget_free_day">Free day • No routines today</string>
+    <string name="widget_done_today">Completed for today (%1$s)</string>
+    <string name="widget_more_today_format">+%1$d more today</string>
+</resources>

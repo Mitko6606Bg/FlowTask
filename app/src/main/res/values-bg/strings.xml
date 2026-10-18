@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlowTask</string>
+    <string name="widget_today_name">FlowTask Днес</string>
+    <string name="widget_today_description">Преглед на днешните задачи и бързо създаване.</string>
+    <string name="widget_today_title">Днес</string>
+    <string name="widget_empty_title">Всичко е готово за днес! 🎉</string>
+    <string name="widget_empty_subtitle">Натиснете +, за да създадете нещо ново</string>
+    <string name="widget_create_task">Създаване</string>
+    <string name="widget_remaining_format">%1$d оставащи</string>
+    <string name="widget_all_done">Готово ✓</string>
+    <string name="widget_program_routines_name">FlowTask Програма Графици</string>
+    <string name="widget_program_routines_description">Показва следващите 3 графика за избрана програма в стила на Google stock apps.</string>
+    <string name="widget_program_routines_title">График на програма</string>
+    <string name="widget_select_program">Избор на програма</string>
+    <string name="widget_select_program_subtitle">Изберете коя програма да се показва на тази джаджа</string>
+    <string name="widget_no_routines_upcoming">Няма предстоящи графици</string>
+    <string name="widget_tap_to_view_program">Натиснете, за да отворите програмата</string>
+    <string name="widget_no_program_selected">Натиснете ⚙, за да изберете програма</string>
+    <string name="widget_save_for_widget">Запази за джаджата</string>
+    <string name="widget_now_label">Сега</string>
+    <string name="widget_today_label">Днес</string>
+    <string name="widget_tomorrow_label">Утре</string>
+    <string name="widget_routines_count_format">%1$d графика / седмица</string>
+    <string name="widget_no_programs_create_one">Все още нямате създадени програми</string>
+    <string name="widget_open_program_manager">Отворете FlowTask, за да създадете програма</string>
+    <string name="widget_badge_now">СЕГА</string>
+    <string name="widget_badge_next">СЛЕДВАЩ</string>
+    <string name="widget_coverage_format">%1$s днес (%2$d%%)</string>
+    <string name="widget_free_day">Свободен ден • Без графици днес</string>
+    <string name="widget_done_today">Завършено за днес (%1$s)</string>
+    <string name="widget_more_today_format">+%1$d още днес</string>
+</resources>
