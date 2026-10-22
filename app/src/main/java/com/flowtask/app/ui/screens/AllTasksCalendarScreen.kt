@@ -52,7 +52,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -121,15 +121,15 @@ fun AllTasksCalendarScreen(
 ) {
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
-    val allTasks by viewModel.allTasks.collectAsState()
-    val availableLayers by viewModel.availableLayers.collectAsState()
-    val selectedLayer by viewModel.selectedLayer.collectAsState()
-    val semesterConfig by viewModel.semesterConfig.collectAsState()
-    val layerPrograms by viewModel.layerPrograms.collectAsState()
-    val selectedCalendarProgramId by viewModel.selectedCalendarProgramId.collectAsState()
-    val isFiltersExpanded by viewModel.calendarFiltersExpanded.collectAsState()
+    val allTasks by viewModel.allTasks.collectAsStateWithLifecycle()
+    val availableLayers by viewModel.availableLayers.collectAsStateWithLifecycle()
+    val selectedLayer by viewModel.selectedLayer.collectAsStateWithLifecycle()
+    val semesterConfig by viewModel.semesterConfig.collectAsStateWithLifecycle()
+    val layerPrograms by viewModel.layerPrograms.collectAsStateWithLifecycle()
+    val selectedCalendarProgramId by viewModel.selectedCalendarProgramId.collectAsStateWithLifecycle()
+    val isFiltersExpanded by viewModel.calendarFiltersExpanded.collectAsStateWithLifecycle()
 
-    val currentViewModeName by viewModel.allTasksViewMode.collectAsState()
+    val currentViewModeName by viewModel.allTasksViewMode.collectAsStateWithLifecycle()
     val viewMode = remember(currentViewModeName) {
         try {
             AllTasksViewMode.valueOf(currentViewModeName)
@@ -139,7 +139,7 @@ fun AllTasksCalendarScreen(
     }
     var selectedCalendarDate by remember { mutableStateOf<Long?>(null) }
     var isDateTasksSheetVisible by remember { mutableStateOf(false) }
-    val calendarScrollToTodayTrigger by viewModel.scrollToTodayCalendarTrigger.collectAsState()
+    val calendarScrollToTodayTrigger by viewModel.scrollToTodayCalendarTrigger.collectAsStateWithLifecycle()
 
     val activeCalendarPrograms = remember(layerPrograms, selectedCalendarProgramId) {
         when (selectedCalendarProgramId) {
@@ -601,7 +601,11 @@ fun AllTasksListView(
                         modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
                     )
                 }
-                items(pendingTasks, key = { "all_pending_${it.task.id}" }) { taskWithSubTasks ->
+                items(
+                    pendingTasks,
+                    key = { "all_pending_${it.task.id}" },
+                    contentType = { "task" }
+                ) { taskWithSubTasks ->
                     TaskCard(
                         taskWithSubTasks = taskWithSubTasks,
                         onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },
@@ -616,7 +620,7 @@ fun AllTasksListView(
             }
 
             if (completedTasks.isNotEmpty()) {
-                item {
+                item(key = "header_all_completed", contentType = "header") {
                     Spacer(modifier = Modifier.height(14.dp))
                     Text(
                         text = strings.completedTasksSection(completedTasks.size),
@@ -628,7 +632,11 @@ fun AllTasksListView(
                         modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)
                     )
                 }
-                items(completedTasks, key = { "all_completed_${it.task.id}" }) { taskWithSubTasks ->
+                items(
+                    completedTasks,
+                    key = { "all_completed_${it.task.id}" },
+                    contentType = { "task" }
+                ) { taskWithSubTasks ->
                     TaskCard(
                         taskWithSubTasks = taskWithSubTasks,
                         onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },
@@ -805,7 +813,8 @@ fun SmartCalendarView(
         ) {
             items(
                 items = activeMonths,
-                key = { (year, monthIndex) -> year * 100 + monthIndex }
+                key = { (year, monthIndex) -> year * 100 + monthIndex },
+                contentType = { "month_card" }
             ) { (year, monthIndex) ->
                 MonthCalendarCard(
                     year = year,

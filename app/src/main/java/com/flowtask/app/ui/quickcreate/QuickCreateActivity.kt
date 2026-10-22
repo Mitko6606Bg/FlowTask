@@ -87,7 +87,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -170,9 +170,9 @@ class QuickCreateActivity : ComponentActivity() {
         val settingsRepo = SettingsRepository(applicationContext)
 
         setContent {
-            val language by settingsRepo.language.collectAsState(initial = "en")
-            val accentColor by settingsRepo.accentColor.collectAsState(initial = "#1D7868")
-            val themeMode by settingsRepo.themeMode.collectAsState(initial = "system")
+            val language by settingsRepo.language.collectAsStateWithLifecycle(initialValue = "en")
+            val accentColor by settingsRepo.accentColor.collectAsStateWithLifecycle(initialValue = "#1D7868")
+            val themeMode by settingsRepo.themeMode.collectAsStateWithLifecycle(initialValue = "system")
 
             FlowTaskTheme(
                 language = language,
@@ -272,8 +272,8 @@ fun QuickCreateFloatingCardHost(
     // Database
     val db = remember { AppDatabase.getInstance(context) }
     val semesterRepo = remember { com.flowtask.app.data.repository.SemesterRepository(context) }
-    val rawLayers by db.taskDao().getDistinctLayersFlow().collectAsState(initial = emptyList())
-    val programs by semesterRepo.layerPrograms.collectAsState(initial = emptyList())
+    val rawLayers by db.taskDao().getDistinctLayersFlow().collectAsStateWithLifecycle(initialValue = emptyList())
+    val programs by semesterRepo.layerPrograms.collectAsStateWithLifecycle(initialValue = emptyList())
     val availableLayers = remember(rawLayers, programs) {
         val set = linkedSetOf<String>()
         set.addAll(rawLayers.map { it.trim() }.filter { it.isNotBlank() })
@@ -284,7 +284,7 @@ fun QuickCreateFloatingCardHost(
         }
         set.toList().sorted()
     }
-    val availableFolders by db.instantDao().getAllFolders().collectAsState(initial = emptyList<InstantFolderEntity>())
+    val availableFolders by db.instantDao().getAllFolders().collectAsStateWithLifecycle(initialValue = emptyList<InstantFolderEntity>())
 
     // Task Form State
     var taskText by remember { mutableStateOf("") }

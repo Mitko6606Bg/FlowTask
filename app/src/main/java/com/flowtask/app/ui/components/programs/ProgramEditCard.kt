@@ -205,7 +205,11 @@ fun ProgramEditCard(
             horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            items(PROGRAM_PALETTE) { hex ->
+            items(
+                PROGRAM_PALETTE,
+                key = { it },
+                contentType = { "palette_color" }
+            ) { hex ->
                 val isSelected = hex.equals(selectedColorHex, ignoreCase = true)
                 val color = try { Color(android.graphics.Color.parseColor(hex)) } catch (_: Exception) { currentAccent }
 

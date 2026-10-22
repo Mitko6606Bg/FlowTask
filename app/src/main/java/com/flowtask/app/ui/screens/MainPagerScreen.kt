@@ -30,7 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -79,8 +79,8 @@ fun MainPagerScreen(
     instantViewModel: InstantViewModel
 ) {
     val context = LocalContext.current
-    val screenOrder by settingsViewModel.screenOrder.collectAsState()
-    val isSettingsVisible by settingsViewModel.isSettingsSheetVisible.collectAsState()
+    val screenOrder by settingsViewModel.screenOrder.collectAsStateWithLifecycle()
+    val isSettingsVisible by settingsViewModel.isSettingsSheetVisible.collectAsStateWithLifecycle()
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -90,26 +90,26 @@ fun MainPagerScreen(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
 
-    val isSheetVisible by taskViewModel.isAddOrEditSheetVisible.collectAsState()
-    val isSemesterSheetVisible by taskViewModel.isSemesterSheetVisible.collectAsState()
-    val isCaptureSheetVisible by instantViewModel.isCaptureSheetVisible.collectAsState()
-    val editingTask by taskViewModel.editingTask.collectAsState()
-    val defaultDateForNewTask by taskViewModel.defaultDateForNewTask.collectAsState()
-    val defaultStartDateForNewTask by taskViewModel.defaultStartDateForNewTask.collectAsState()
-    val availableLayers by taskViewModel.availableLayers.collectAsState()
-    val selectedLayer by taskViewModel.selectedLayer.collectAsState()
-    val allTasksViewMode by taskViewModel.allTasksViewMode.collectAsState()
-    val editingLayer by taskViewModel.editingLayer.collectAsState()
-    val editingLayerTaskCount by taskViewModel.editingLayerTaskCount.collectAsState()
-    val lastRenamedLayer by taskViewModel.lastRenamedLayer.collectAsState()
-    val lastDeletedLayer by taskViewModel.lastDeletedLayer.collectAsState()
+    val isSheetVisible by taskViewModel.isAddOrEditSheetVisible.collectAsStateWithLifecycle()
+    val isSemesterSheetVisible by taskViewModel.isSemesterSheetVisible.collectAsStateWithLifecycle()
+    val isCaptureSheetVisible by instantViewModel.isCaptureSheetVisible.collectAsStateWithLifecycle()
+    val editingTask by taskViewModel.editingTask.collectAsStateWithLifecycle()
+    val defaultDateForNewTask by taskViewModel.defaultDateForNewTask.collectAsStateWithLifecycle()
+    val defaultStartDateForNewTask by taskViewModel.defaultStartDateForNewTask.collectAsStateWithLifecycle()
+    val availableLayers by taskViewModel.availableLayers.collectAsStateWithLifecycle()
+    val selectedLayer by taskViewModel.selectedLayer.collectAsStateWithLifecycle()
+    val allTasksViewMode by taskViewModel.allTasksViewMode.collectAsStateWithLifecycle()
+    val editingLayer by taskViewModel.editingLayer.collectAsStateWithLifecycle()
+    val editingLayerTaskCount by taskViewModel.editingLayerTaskCount.collectAsStateWithLifecycle()
+    val lastRenamedLayer by taskViewModel.lastRenamedLayer.collectAsStateWithLifecycle()
+    val lastDeletedLayer by taskViewModel.lastDeletedLayer.collectAsStateWithLifecycle()
 
-    val isSearchActive by projectViewModel.isSearchActive.collectAsState()
-    val searchQuery by projectViewModel.searchQuery.collectAsState()
-    val isNoteSheetVisible by projectViewModel.isNoteSheetVisible.collectAsState()
-    val editingNote by projectViewModel.editingProjectNote.collectAsState()
-    val selectedProject by projectViewModel.selectedProject.collectAsState()
-    val folderNavigationStack by projectViewModel.folderNavigationStack.collectAsState()
+    val isSearchActive by projectViewModel.isSearchActive.collectAsStateWithLifecycle()
+    val searchQuery by projectViewModel.searchQuery.collectAsStateWithLifecycle()
+    val isNoteSheetVisible by projectViewModel.isNoteSheetVisible.collectAsStateWithLifecycle()
+    val editingNote by projectViewModel.editingProjectNote.collectAsStateWithLifecycle()
+    val selectedProject by projectViewModel.selectedProject.collectAsStateWithLifecycle()
+    val folderNavigationStack by projectViewModel.folderNavigationStack.collectAsStateWithLifecycle()
 
     LaunchedEffect(pagerState.currentPage) {
         if (pagerState.currentPage != 0 && isSearchActive) {
@@ -341,7 +341,7 @@ fun MainPagerScreen(
         }
 
         // Instant Capture Bottom Sheet (Note input & Google Photos style folder cards after 4:3 shoot)
-        val pendingCapturePath by instantViewModel.pendingCapturePath.collectAsState()
+        val pendingCapturePath by instantViewModel.pendingCapturePath.collectAsStateWithLifecycle()
 
         if (isCaptureSheetVisible && pendingCapturePath != null) {
             InstantCaptureBottomSheet(
@@ -363,7 +363,7 @@ fun MainPagerScreen(
         }
 
         // Project Note Editor (In-screen fluid morphing bottom card & full-screen canvas)
-        val noteOriginBounds by projectViewModel.noteOriginBounds.collectAsState()
+        val noteOriginBounds by projectViewModel.noteOriginBounds.collectAsStateWithLifecycle()
 
         if (isNoteSheetVisible) {
             ProjectNoteEditor(

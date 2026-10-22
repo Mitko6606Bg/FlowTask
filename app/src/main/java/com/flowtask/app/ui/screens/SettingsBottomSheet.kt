@@ -68,7 +68,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -119,15 +119,15 @@ fun SettingsBottomSheet(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
 
-    val currentLanguage by viewModel.language.collectAsState()
-    val currentAccentHex by viewModel.accentColor.collectAsState()
-    val currentThemeMode by viewModel.themeMode.collectAsState()
-    val isAmoled by viewModel.amoledDarkMode.collectAsState()
-    val dynamicColorStyle by viewModel.dynamicColorStyle.collectAsState()
+    val currentLanguage by viewModel.language.collectAsStateWithLifecycle()
+    val currentAccentHex by viewModel.accentColor.collectAsStateWithLifecycle()
+    val currentThemeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+    val isAmoled by viewModel.amoledDarkMode.collectAsStateWithLifecycle()
+    val dynamicColorStyle by viewModel.dynamicColorStyle.collectAsStateWithLifecycle()
     val isDark = LocalDarkTheme.current
-    val screenOrder by viewModel.screenOrder.collectAsState()
-    val currentProgramTasksEverywhere by viewModel.programTasksEverywhere.collectAsState()
-    val semesterConfig by (taskViewModel?.semesterConfig ?: remember { MutableStateFlow(SemesterConfig()) }).collectAsState()
+    val screenOrder by viewModel.screenOrder.collectAsStateWithLifecycle()
+    val currentProgramTasksEverywhere by viewModel.programTasksEverywhere.collectAsStateWithLifecycle()
+    val semesterConfig by (taskViewModel?.semesterConfig ?: remember { MutableStateFlow(SemesterConfig()) }).collectAsStateWithLifecycle()
     var showStartDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }
 

@@ -411,7 +411,10 @@ fun AnimatedCheckbox(
     Box(
         modifier = modifier
             .size(size)
-            .scale(scale)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
             .clip(CircleShape)
             .background(bgColor)
             .border(1.8.dp, borderColor, CircleShape)
@@ -481,6 +484,7 @@ fun SubTaskItemRow(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
+            .expressiveBounce(pressScale = 0.98f)
             .clickable { onToggle(!subTask.isCompleted) }
             .padding(vertical = 5.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically

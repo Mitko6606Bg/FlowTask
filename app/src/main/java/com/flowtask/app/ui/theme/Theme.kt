@@ -23,6 +23,12 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -165,27 +171,47 @@ object ExpressiveMotion {
 }
 
 /**
- * Material 3 Expressive tactile touch feedback:
+ * Material 3 Expressive & Emil Kowalski tactile touch feedback:
  * Smoothly compresses by [pressScale] (default 3%) when pressed, then springs back with physical bounce.
+ * Supports both explicit [interactionSource] binding and zero-config pointerInput touch observation.
  */
 @Composable
 fun Modifier.expressiveBounce(
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    interactionSource: MutableInteractionSource? = null,
     pressScale: Float = 0.97f
 ): Modifier {
-    val isPressed by interactionSource.collectIsPressedAsState()
+    var isPressedLocal by remember { mutableStateOf(false) }
+    val isPressedFromSource = interactionSource?.collectIsPressedAsState()?.value ?: false
+    val isPressed = isPressedLocal || isPressedFromSource
+
     val scale by animateFloatAsState(
         targetValue = if (isPressed) pressScale else 1f,
         animationSpec = spring(
-            dampingRatio = 0.65f,
+            dampingRatio = 0.75f,
             stiffness = 450f
         ),
         label = "expressiveBounce"
     )
-    return this.graphicsLayer {
-        scaleX = scale
-        scaleY = scale
-    }
+
+    return this
+        .graphicsLayer {
+            scaleX = scale
+            scaleY = scale
+        }
+        .then(
+            if (interactionSource == null) {
+                Modifier.pointerInput(Unit) {
+                    awaitEachGesture {
+                        awaitFirstDown(requireUnconsumed = false)
+                        isPressedLocal = true
+                        waitForUpOrCancellation()
+                        isPressedLocal = false
+                    }
+                }
+            } else {
+                Modifier
+            }
+        )
 }
 
 // ============================================================================

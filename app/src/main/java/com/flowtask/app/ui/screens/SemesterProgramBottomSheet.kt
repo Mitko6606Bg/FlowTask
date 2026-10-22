@@ -41,7 +41,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -92,8 +92,8 @@ fun SemesterProgramBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
-    val layerPrograms by viewModel.layerPrograms.collectAsState()
-    val targetProgramDetailsId by viewModel.targetProgramDetailsId.collectAsState()
+    val layerPrograms by viewModel.layerPrograms.collectAsStateWithLifecycle()
+    val targetProgramDetailsId by viewModel.targetProgramDetailsId.collectAsStateWithLifecycle()
 
     var screenMode by remember {
         mutableStateOf(
@@ -322,7 +322,11 @@ fun SemesterProgramBottomSheet(
                                 contentPadding = PaddingValues(top = 4.dp, bottom = 40.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                items(layerPrograms, key = { it.id }) { program ->
+                                items(
+                                    layerPrograms,
+                                    key = { it.id },
+                                    contentType = { "program" }
+                                ) { program ->
                                     ProgramFolderCard(
                                         program = program,
                                         onOpenProgram = {

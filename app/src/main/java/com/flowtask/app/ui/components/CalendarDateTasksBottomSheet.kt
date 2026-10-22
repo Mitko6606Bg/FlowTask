@@ -35,7 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -78,8 +78,8 @@ fun CalendarDateTasksBottomSheet(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
 
-    val layerPrograms by viewModel.layerPrograms.collectAsState()
-    val selectedCalendarProgramId by viewModel.selectedCalendarProgramId.collectAsState()
+    val layerPrograms by viewModel.layerPrograms.collectAsStateWithLifecycle()
+    val selectedCalendarProgramId by viewModel.selectedCalendarProgramId.collectAsStateWithLifecycle()
 
     val filteredPrograms = remember(layerPrograms, selectedCalendarProgramId) {
         when (selectedCalendarProgramId) {
@@ -346,7 +346,11 @@ fun CalendarDateTasksBottomSheet(
                             )
                         }
 
-                        items(dayProgramItems, key = { "prog_${it.second.id}" }) { (layerName, item) ->
+                        items(
+                            dayProgramItems,
+                            key = { "prog_${it.second.id}" },
+                            contentType = { "program_item" }
+                        ) { (layerName, item) ->
                             Surface(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(18.dp),
@@ -435,7 +439,11 @@ fun CalendarDateTasksBottomSheet(
                     }
 
                     if (deduplicatedTasks.isNotEmpty()) {
-                        items(deduplicatedTasks, key = { it.task.id }) { taskWithSubTasks ->
+                        items(
+                            deduplicatedTasks,
+                            key = { it.task.id },
+                            contentType = { "task" }
+                        ) { taskWithSubTasks ->
                             TaskCard(
                                 taskWithSubTasks = taskWithSubTasks,
                                 onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },

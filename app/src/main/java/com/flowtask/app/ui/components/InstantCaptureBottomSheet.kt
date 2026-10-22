@@ -37,7 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -84,7 +84,7 @@ fun InstantCaptureBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
-    val foldersWithFaces by viewModel.foldersWithFaces.collectAsState()
+    val foldersWithFaces by viewModel.foldersWithFaces.collectAsStateWithLifecycle()
 
     var noteText by remember { mutableStateOf("") }
     var showNewFolderDialog by remember { mutableStateOf(false) }

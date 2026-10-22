@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.sp
@@ -42,11 +42,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         handleIntent(intent)
         setContent {
-            val language by settingsViewModel.language.collectAsState()
-            val accentColor by settingsViewModel.accentColor.collectAsState()
-            val themeMode by settingsViewModel.themeMode.collectAsState()
-            val amoledDarkMode by settingsViewModel.amoledDarkMode.collectAsState()
-            val dynamicColorStyle by settingsViewModel.dynamicColorStyle.collectAsState()
+            val language by settingsViewModel.language.collectAsStateWithLifecycle()
+            val accentColor by settingsViewModel.accentColor.collectAsStateWithLifecycle()
+            val themeMode by settingsViewModel.themeMode.collectAsStateWithLifecycle()
+            val amoledDarkMode by settingsViewModel.amoledDarkMode.collectAsStateWithLifecycle()
+            val dynamicColorStyle by settingsViewModel.dynamicColorStyle.collectAsStateWithLifecycle()
 
             var crashLogText by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
             androidx.compose.runtime.LaunchedEffect(Unit) {

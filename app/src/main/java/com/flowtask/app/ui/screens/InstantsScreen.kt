@@ -63,7 +63,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -128,9 +128,9 @@ fun InstantsScreen(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
 
-    val allSnaps by viewModel.allSnaps.collectAsState()
-    val foldersWithFaces by viewModel.foldersWithFaces.collectAsState()
-    val isCreateFolderDialogVisible by viewModel.isCreateFolderDialogVisible.collectAsState()
+    val allSnaps by viewModel.allSnaps.collectAsStateWithLifecycle()
+    val foldersWithFaces by viewModel.foldersWithFaces.collectAsStateWithLifecycle()
+    val isCreateFolderDialogVisible by viewModel.isCreateFolderDialogVisible.collectAsStateWithLifecycle()
 
     var currentView by remember { mutableStateOf<InstantScreenView>(InstantScreenView.Albums) }
     var predictiveBackProgress by remember { mutableFloatStateOf(0f) }
@@ -313,7 +313,11 @@ fun InstantsScreen(
                                 contentPadding = PaddingValues(top = 4.dp, bottom = 100.dp),
                                 modifier = Modifier.fillMaxSize()
                             ) {
-                                items(foldersWithFaces, key = { it.name }) { folder ->
+                                items(
+                                    foldersWithFaces,
+                                    key = { it.name },
+                                    contentType = { "folder" }
+                                ) { folder ->
                                     GooglePhotosFolderCard(
                                         folder = folder,
                                         onClick = {
@@ -427,7 +431,11 @@ fun InstantsScreen(
                                 contentPadding = PaddingValues(top = 4.dp, bottom = 100.dp),
                                 modifier = Modifier.fillMaxSize()
                             ) {
-                                items(snapsInFolder, key = { it.id }) { snap ->
+                                items(
+                                    snapsInFolder,
+                                    key = { it.id },
+                                    contentType = { "snap" }
+                                ) { snap ->
                                     InstantPhotoCard(
                                         snap = snap,
                                         onClick = {
@@ -677,7 +685,7 @@ private fun PhotoDetailViewPage(
 ) {
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
-    val allFolders by viewModel.allFolders.collectAsState()
+    val allFolders by viewModel.allFolders.collectAsStateWithLifecycle()
 
     var fullBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isEditingNote by remember { mutableStateOf(false) }

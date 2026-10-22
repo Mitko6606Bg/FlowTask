@@ -45,7 +45,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -90,10 +90,10 @@ fun TodayUpcomingScreen(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
     val dockColors = LocalDockColors.current
-    val todayTasks by viewModel.todayTasks.collectAsState()
-    val upcomingTasks by viewModel.upcomingTasks.collectAsState()
-    val availableLayers by viewModel.availableLayers.collectAsState()
-    val selectedLayer by viewModel.selectedLayer.collectAsState()
+    val todayTasks by viewModel.todayTasks.collectAsStateWithLifecycle()
+    val upcomingTasks by viewModel.upcomingTasks.collectAsStateWithLifecycle()
+    val availableLayers by viewModel.availableLayers.collectAsStateWithLifecycle()
+    val selectedLayer by viewModel.selectedLayer.collectAsStateWithLifecycle()
 
     var isCompletedExpanded by remember { mutableStateOf(false) }
     var isUpcomingCompletedExpanded by remember { mutableStateOf(false) }
@@ -348,7 +348,11 @@ fun TodayUpcomingScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(top = 2.dp, bottom = 12.dp)
                             ) {
-                                items(pendingToday, key = { "today_${it.task.id}" }) { taskWithSubTasks ->
+                                items(
+                                    pendingToday,
+                                    key = { "today_${it.task.id}" },
+                                    contentType = { "task" }
+                                ) { taskWithSubTasks ->
                                     val index = pendingToday.indexOf(taskWithSubTasks)
                                     TaskCard(
                                         taskWithSubTasks = taskWithSubTasks,
@@ -367,7 +371,7 @@ fun TodayUpcomingScreen(
                                 }
 
                                 if (completedToday.isNotEmpty()) {
-                                    item {
+                                    item(key = "header_completed_today", contentType = "header") {
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Row(
                                             modifier = Modifier
@@ -396,7 +400,11 @@ fun TodayUpcomingScreen(
                                     }
 
                                     if (isCompletedExpanded) {
-                                        items(completedToday, key = { "completed_today_${it.task.id}" }) { taskWithSubTasks ->
+                                        items(
+                                            completedToday,
+                                            key = { "completed_today_${it.task.id}" },
+                                            contentType = { "task" }
+                                        ) { taskWithSubTasks ->
                                             TaskCard(
                                                 taskWithSubTasks = taskWithSubTasks,
                                                 onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },
@@ -581,7 +589,11 @@ fun TodayUpcomingScreen(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
                                 contentPadding = PaddingValues(top = 2.dp, bottom = 120.dp)
                             ) {
-                                items(pendingUpcoming, key = { "upcoming_${it.task.id}" }) { taskWithSubTasks ->
+                                items(
+                                    pendingUpcoming,
+                                    key = { "upcoming_${it.task.id}" },
+                                    contentType = { "task" }
+                                ) { taskWithSubTasks ->
                                     TaskCard(
                                         taskWithSubTasks = taskWithSubTasks,
                                         onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },
@@ -595,7 +607,7 @@ fun TodayUpcomingScreen(
                                 }
 
                                 if (completedUpcoming.isNotEmpty() && !isUpcomingDocked) {
-                                    item(key = "header_completed_upcoming") {
+                                    item(key = "header_completed_upcoming", contentType = "header") {
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Row(
                                             modifier = Modifier
@@ -624,7 +636,11 @@ fun TodayUpcomingScreen(
                                     }
 
                                     if (isUpcomingCompletedExpanded) {
-                                        items(completedUpcoming, key = { "completed_upcoming_${it.task.id}" }) { taskWithSubTasks ->
+                                        items(
+                                            completedUpcoming,
+                                            key = { "completed_upcoming_${it.task.id}" },
+                                            contentType = { "task" }
+                                        ) { taskWithSubTasks ->
                                             TaskCard(
                                                 taskWithSubTasks = taskWithSubTasks,
                                                 onToggleTask = { id, done -> viewModel.toggleTaskCompletion(id, done) },

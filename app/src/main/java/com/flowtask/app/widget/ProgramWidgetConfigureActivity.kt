@@ -50,7 +50,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -136,9 +136,9 @@ class ProgramWidgetConfigureActivity : ComponentActivity() {
         val semesterRepo = SemesterRepository(applicationContext)
 
         setContent {
-            val language by settingsRepo.language.collectAsState(initial = "bg")
-            val accentColor by settingsRepo.accentColor.collectAsState(initial = "#1D7868")
-            val themeMode by settingsRepo.themeMode.collectAsState(initial = "system")
+            val language by settingsRepo.language.collectAsStateWithLifecycle(initialValue = "bg")
+            val accentColor by settingsRepo.accentColor.collectAsStateWithLifecycle(initialValue = "#1D7868")
+            val themeMode by settingsRepo.themeMode.collectAsStateWithLifecycle(initialValue = "system")
 
             FlowTaskTheme(
                 language = language,
@@ -193,7 +193,7 @@ fun ProgramWidgetConfigureScreen(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val programs by semesterRepo.layerPrograms.collectAsState()
+    val programs by semesterRepo.layerPrograms.collectAsStateWithLifecycle()
     val savedId = remember(appWidgetId) {
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             ProgramWidgetPrefs.getSelectedProgramId(context, appWidgetId)
@@ -422,7 +422,11 @@ fun ProgramWidgetConfigureScreen(
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                             contentPadding = PaddingValues(vertical = 4.dp)
                         ) {
-                            items(programs, key = { it.id }) { program ->
+                            items(
+                                programs,
+                                key = { it.id },
+                                contentType = { "program" }
+                            ) { program ->
                                 val isSelected = program.id == selectedProgramId
                                 val progColor = remember(program.colorHex, defaultAccent) {
                                     if (!program.colorHex.isNullOrBlank()) {

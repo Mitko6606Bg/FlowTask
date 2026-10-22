@@ -126,7 +126,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -189,17 +189,17 @@ fun ProjectsScreen(
     viewModel: ProjectViewModel,
     modifier: Modifier = Modifier
 ) {
-    val selectedProject by viewModel.selectedProject.collectAsState()
-    val folderStack by viewModel.folderNavigationStack.collectAsState()
+    val selectedProject by viewModel.selectedProject.collectAsStateWithLifecycle()
+    val folderStack by viewModel.folderNavigationStack.collectAsStateWithLifecycle()
 
-    val isCreateProjectDialogVisible by viewModel.isCreateProjectDialogVisible.collectAsState()
-    val isCreateFolderDialogVisible by viewModel.isCreateFolderDialogVisible.collectAsState()
-    val isTaskSheetVisible by viewModel.isTaskSheetVisible.collectAsState()
-    val editingTask by viewModel.editingProjectTask.collectAsState()
-    val moveTarget by viewModel.moveTarget.collectAsState()
-    val editingProject by viewModel.editingProject.collectAsState()
-    val renamingFolder by viewModel.renamingFolder.collectAsState()
-    val allProjectFolders by viewModel.allProjectFolders.collectAsState()
+    val isCreateProjectDialogVisible by viewModel.isCreateProjectDialogVisible.collectAsStateWithLifecycle()
+    val isCreateFolderDialogVisible by viewModel.isCreateFolderDialogVisible.collectAsStateWithLifecycle()
+    val isTaskSheetVisible by viewModel.isTaskSheetVisible.collectAsStateWithLifecycle()
+    val editingTask by viewModel.editingProjectTask.collectAsStateWithLifecycle()
+    val moveTarget by viewModel.moveTarget.collectAsStateWithLifecycle()
+    val editingProject by viewModel.editingProject.collectAsStateWithLifecycle()
+    val renamingFolder by viewModel.renamingFolder.collectAsStateWithLifecycle()
+    val allProjectFolders by viewModel.allProjectFolders.collectAsStateWithLifecycle()
 
     var predictiveBackProgress by remember { mutableFloatStateOf(0f) }
     var predictiveBackEdge by remember { mutableIntStateOf(BackEventCompat.EDGE_LEFT) }
@@ -444,9 +444,9 @@ fun ProjectsDashboardView(
     val currentAccent = LocalAccentColor.current
     val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
-    val projects by viewModel.projects.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val searchResults by viewModel.searchResults.collectAsState()
+    val projects by viewModel.projects.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
 
     var pinnedItems by remember { mutableStateOf(projects.filter { it.isPinned }) }
     var otherItems by remember { mutableStateOf(projects.filter { !it.isPinned }) }
@@ -655,7 +655,7 @@ fun ProjectsDashboardView(
                     }
                 }
             } else {
-                items(searchResults, key = { "search_match_${it.project.id}" }) { match ->
+                items(searchResults, key = { "search_match_${it.project.id}" }, contentType = { "search_match" }) { match ->
                     val projectColor = getM3TonalProjectColor(match.project.colorHex)
                     Column(
                         modifier = Modifier
@@ -788,7 +788,7 @@ fun ProjectsDashboardView(
                     }
                 }
 
-                items(pinnedItems, key = { it.id }) { project ->
+                items(pinnedItems, key = { it.id }, contentType = { "project" }) { project ->
                     val isDragging = activeDragId == project.id
                     ProjectCard(
                         project = project,
@@ -830,7 +830,7 @@ fun ProjectsDashboardView(
                         }
                     }
 
-                    items(otherItems, key = { it.id }) { project ->
+                    items(otherItems, key = { it.id }, contentType = { "project" }) { project ->
                         val isDragging = activeDragId == project.id
                         ProjectCard(
                             project = project,
@@ -854,7 +854,7 @@ fun ProjectsDashboardView(
                     }
                 }
             } else {
-                items(otherItems, key = { it.id }) { project ->
+                items(otherItems, key = { it.id }, contentType = { "project" }) { project ->
                     val isDragging = activeDragId == project.id
                     ProjectCard(
                         project = project,
@@ -1142,11 +1142,11 @@ fun ProjectDetailView(
     val strings = LocalAppStrings.current
     val currentAccent = LocalAccentColor.current
     val projectColor = getM3TonalProjectColor(project.colorHex)
-    val folders by viewModel.currentFolders.collectAsState()
-    val tasks by viewModel.currentTasks.collectAsState()
-    val notes by viewModel.currentNotes.collectAsState()
-    val filterType by viewModel.filterType.collectAsState()
-    val folderItemCounts by viewModel.folderItemCounts.collectAsState()
+    val folders by viewModel.currentFolders.collectAsStateWithLifecycle()
+    val tasks by viewModel.currentTasks.collectAsStateWithLifecycle()
+    val notes by viewModel.currentNotes.collectAsStateWithLifecycle()
+    val filterType by viewModel.filterType.collectAsStateWithLifecycle()
+    val folderItemCounts by viewModel.folderItemCounts.collectAsStateWithLifecycle()
 
     val currentFolder = folderStack.lastOrNull()
     val totalItemsAtLevel = folders.size + tasks.size + notes.size
@@ -1543,7 +1543,7 @@ fun ProjectDetailView(
                 }
             }
 
-            items(folders, key = { "folder_${it.id}" }) { folder ->
+            items(folders, key = { "folder_${it.id}" }, contentType = { "folder" }) { folder ->
                 val count = folderItemCounts[folder.id] ?: 0
                 FolderCard(
                     folder = folder,
@@ -1572,7 +1572,7 @@ fun ProjectDetailView(
                 }
             }
 
-            items(tasks, key = { "task_${it.task.id}" }) { taskWithSubTasks ->
+            items(tasks, key = { "task_${it.task.id}" }, contentType = { "task" }) { taskWithSubTasks ->
                 ProjectTaskCard(
                     taskWithSubTasks = taskWithSubTasks,
                     onToggleTask = { id, done -> viewModel.toggleProjectTaskCompletion(id, done) },
