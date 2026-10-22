@@ -130,7 +130,20 @@ fun TaskCard(
 
     val cardAlpha by animateFloatAsState(
         targetValue = if (task.isCompleted) 0.55f else 1.0f,
+        animationSpec = spring(
+            dampingRatio = 0.85f,
+            stiffness = 500f
+        ),
         label = "cardAlpha"
+    )
+
+    val taskTextColor by animateColorAsState(
+        targetValue = if (task.isCompleted) TextMuted else TextPrimary,
+        animationSpec = spring(
+            dampingRatio = 0.85f,
+            stiffness = 500f
+        ),
+        label = "taskTextColor"
     )
 
     Surface(
@@ -190,7 +203,7 @@ fun TaskCard(
                             fontWeight = if (task.isCompleted) FontWeight.Normal else FontWeight.SemiBold,
                             fontSize = 15.sp,
                             textDecoration = if (task.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-                            color = if (task.isCompleted) TextMuted else TextPrimary,
+                            color = taskTextColor,
                             lineHeight = 21.sp
                         )
                     )
@@ -259,16 +272,16 @@ fun TaskCard(
                 visible = isExpanded && totalSubtasks > 0,
                 enter = expandVertically(
                     animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                        stiffness = Spring.StiffnessMediumLow
+                        dampingRatio = 0.82f,
+                        stiffness = 500f
                     )
-                ) + fadeIn(animationSpec = tween(150)),
+                ) + fadeIn(animationSpec = tween(140)),
                 exit = shrinkVertically(
                     animationSpec = spring(
-                        dampingRatio = Spring.DampingRatioNoBouncy,
-                        stiffness = Spring.StiffnessMedium
+                        dampingRatio = 0.88f,
+                        stiffness = 550f
                     )
-                ) + fadeOut(animationSpec = tween(120))
+                ) + fadeOut(animationSpec = tween(100))
             ) {
                 Column(
                     modifier = Modifier
@@ -383,19 +396,19 @@ fun AnimatedCheckbox(
 
     val scale by animateFloatAsState(
         targetValue = if (isActive) 1.08f else 1.0f,
-        animationSpec = spring(dampingRatio = 0.5f, stiffness = 450f),
+        animationSpec = spring(dampingRatio = 0.74f, stiffness = 550f),
         label = "checkboxScale"
     )
 
     val bgColor by animateColorAsState(
         targetValue = if (isActive) currentAccent else Color.Transparent,
-        animationSpec = spring(dampingRatio = 0.8f, stiffness = 500f),
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 500f),
         label = "checkboxBg"
     )
 
     val borderColor by animateColorAsState(
         targetValue = if (isActive) currentAccent else CheckboxUnchecked,
-        animationSpec = spring(dampingRatio = 0.8f, stiffness = 500f),
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 500f),
         label = "checkboxBorder"
     )
 
@@ -424,8 +437,8 @@ fun AnimatedCheckbox(
         AnimatedContent(
             targetState = state,
             transitionSpec = {
-                (fadeIn(animationSpec = tween(140)) + scaleIn(initialScale = 0.7f, animationSpec = tween(140)))
-                    .togetherWith(fadeOut(animationSpec = tween(140)) + scaleOut(targetScale = 0.7f, animationSpec = tween(140)))
+                (fadeIn(animationSpec = tween(120)) + scaleIn(initialScale = 0.85f, animationSpec = spring(dampingRatio = 0.78f, stiffness = 550f)))
+                    .togetherWith(fadeOut(animationSpec = tween(90)) + scaleOut(targetScale = 0.85f, animationSpec = tween(90)))
             },
             label = "checkboxIcon"
         ) { targetState ->
@@ -480,6 +493,15 @@ fun SubTaskItemRow(
     val currentAccent = LocalAccentColor.current
     val strings = LocalAppStrings.current
 
+    val subTaskTextColor by animateColorAsState(
+        targetValue = if (subTask.isCompleted) TextMuted else TextPrimary,
+        animationSpec = spring(
+            dampingRatio = 0.85f,
+            stiffness = 500f
+        ),
+        label = "subTaskTextColor"
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -502,7 +524,7 @@ fun SubTaskItemRow(
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = 14.sp,
                 textDecoration = if (subTask.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
-                color = if (subTask.isCompleted) TextMuted else TextPrimary,
+                color = subTaskTextColor,
                 lineHeight = 20.sp
             ),
             modifier = Modifier.weight(1f)
@@ -576,16 +598,32 @@ fun SubtaskProgressChip(
     val chevronRotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
         animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMedium
+            dampingRatio = 0.78f,
+            stiffness = 500f
         ),
         label = "subtaskChevronRotation"
+    )
+
+    val chipBgColor by animateColorAsState(
+        targetValue = if (completed == total) currentAccent.copy(alpha = 0.15f) else SurfaceContainerLow,
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 500f),
+        label = "subtaskChipBg"
+    )
+    val chipAccentColor by animateColorAsState(
+        targetValue = if (completed == total) currentAccent else TextSecondary,
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 500f),
+        label = "subtaskChipAccent"
+    )
+    val chipTextColor by animateColorAsState(
+        targetValue = if (completed == total) currentAccent else TextPrimary,
+        animationSpec = spring(dampingRatio = 0.82f, stiffness = 500f),
+        label = "subtaskChipText"
     )
 
     Surface(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .expressiveBounce(interactionSource = chipInteractionSource, pressScale = 0.94f)
+            .expressiveBounce(interactionSource = chipInteractionSource, pressScale = 0.95f)
             .pointerInput(isExpanded) {
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false)
@@ -625,7 +663,7 @@ fun SubtaskProgressChip(
                 }
             },
         shape = RoundedCornerShape(12.dp),
-        color = if (completed == total) currentAccent.copy(alpha = 0.15f) else SurfaceContainerLow
+        color = chipBgColor
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
@@ -634,14 +672,14 @@ fun SubtaskProgressChip(
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
-                tint = if (completed == total) currentAccent else TextSecondary,
+                tint = chipAccentColor,
                 modifier = Modifier.size(13.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
                 text = "$completed/$total",
                 style = MaterialTheme.typography.labelSmall.copy(
-                    color = if (completed == total) currentAccent else TextPrimary,
+                    color = chipTextColor,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp
                 ),
@@ -652,7 +690,7 @@ fun SubtaskProgressChip(
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
                 contentDescription = if (isExpanded) "Collapse" else "Expand",
-                tint = if (completed == total) currentAccent else TextSecondary,
+                tint = chipAccentColor,
                 modifier = Modifier
                     .size(13.dp)
                     .graphicsLayer { rotationZ = chevronRotation }
@@ -712,7 +750,7 @@ fun SubtaskCloseHandle(
         modifier = modifier
             .fillMaxWidth()
             .height(28.dp)
-            .expressiveBounce(interactionSource = handleInteractionSource, pressScale = 0.90f)
+            .expressiveBounce(interactionSource = handleInteractionSource, pressScale = 0.95f)
             .pointerInput(Unit) {
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false)

@@ -168,6 +168,7 @@ object ExpressiveMotion {
     val SpringBouncy = spring<Float>(dampingRatio = 0.65f, stiffness = 450f)
     val SpringSnappy = spring<Float>(dampingRatio = 0.8f, stiffness = 550f)
     val SpringGentle = spring<Float>(dampingRatio = 0.9f, stiffness = 300f)
+    val TactileSpring = spring<Float>(dampingRatio = 0.75f, stiffness = 500f)
 }
 
 /**
