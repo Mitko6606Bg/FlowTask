@@ -31,4 +31,14 @@
     <string name="widget_free_day">Free day • No routines today</string>
     <string name="widget_done_today">Completed for today (%1$s)</string>
     <string name="widget_more_today_format">+%1$d more today</string>
+    <string name="notification_channel_reminders">Task Reminders</string>
+    <string name="notification_channel_description">Persistent alerts and reminders for scheduled tasks</string>
+    <string name="notification_action_done">Done</string>
+    <string name="notification_more_subtasks_format">+%1$d more subtasks in app</string>
+    <string name="settings_reminders_title">Time Reminders</string>
+    <string name="settings_reminders_advance_title">Advance Notice</string>
+    <string name="settings_reminders_exact">At exact time</string>
+    <string name="settings_reminders_5min">5 min early</string>
+    <string name="settings_reminders_10min">10 min early</string>
+    <string name="settings_reminders_15min">15 min early</string>
 </resources>

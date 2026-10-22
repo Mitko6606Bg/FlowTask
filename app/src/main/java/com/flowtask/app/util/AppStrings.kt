@@ -276,6 +276,15 @@ interface Strings {
     val semesterWeeksSettingsTitle: String
     val semesterWeeksSettingsDesc: String
 
+    // Reminders
+    val settingsRemindersTitle: String
+    val settingsRemindersDesc: String
+    val settingsRemindersAdvanceTitle: String
+    val settingsRemindersExact: String
+    val settingsReminders5min: String
+    val settingsReminders10min: String
+    val settingsReminders15min: String
+
     // Instants (Quick Photo Notes)
     val instantsTitle: String
     val instantsSubtitle: String
@@ -573,6 +582,15 @@ data object BulgarianStrings : Strings {
     override val semesterWeeksSettingsTitle: String = "Семестриални седмици в календара"
     override val semesterWeeksSettingsDesc: String = "Показване на номерата на седмиците (С1, С2...) и период"
 
+    // Reminders
+    override val settingsRemindersTitle: String = "Напомняния за часови задачи"
+    override val settingsRemindersDesc: String = "Постоянно известие в панела с интерактивни подзадачи до завършване"
+    override val settingsRemindersAdvanceTitle: String = "Предварително известяване"
+    override val settingsRemindersExact: String = "В точния час"
+    override val settingsReminders5min: String = "5 мин по-рано"
+    override val settingsReminders10min: String = "10 мин по-рано"
+    override val settingsReminders15min: String = "15 мин по-рано"
+
     // Instants (Quick Photo Notes)
     override val instantsTitle: String = "Моменти"
     override val instantsSubtitle: String = "Бързи фото бележки за сортиране"
@@ -869,6 +887,15 @@ data object EnglishStrings : Strings {
     override val programTasksEverywhereSwitchDesc: String = "If turned off, routines will appear only on the calendar"
     override val semesterWeeksSettingsTitle: String = "Semester Weeks in Calendar"
     override val semesterWeeksSettingsDesc: String = "Display week numbers (W1, W2...) and active period"
+
+    // Reminders
+    override val settingsRemindersTitle: String = "Time Task Reminders"
+    override val settingsRemindersDesc: String = "Pinned notification with interactive subtasks until marked complete"
+    override val settingsRemindersAdvanceTitle: String = "Advance Notice"
+    override val settingsRemindersExact: String = "At exact time"
+    override val settingsReminders5min: String = "5 min early"
+    override val settingsReminders10min: String = "10 min early"
+    override val settingsReminders15min: String = "15 min early"
 
     // Instants (Quick Photo Notes)
     override val instantsTitle: String = "Instants"

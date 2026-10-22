@@ -32,4 +32,14 @@
     <string name="widget_free_day">Свободен ден • Без графици днес</string>
     <string name="widget_done_today">Завършено за днес (%1$s)</string>
     <string name="widget_more_today_format">+%1$d още днес</string>
+    <string name="notification_channel_reminders">Напомняния за задачи</string>
+    <string name="notification_channel_description">Постоянни известия и напомняния за часови задачи</string>
+    <string name="notification_action_done">Завърши</string>
+    <string name="notification_more_subtasks_format">+%1$d още подзадачи в приложението</string>
+    <string name="settings_reminders_title">Напомняния за часови задачи</string>
+    <string name="settings_reminders_advance_title">Предварително известяване</string>
+    <string name="settings_reminders_exact">В точния час</string>
+    <string name="settings_reminders_5min">5 мин по-рано</string>
+    <string name="settings_reminders_10min">10 мин по-рано</string>
+    <string name="settings_reminders_15min">15 мин по-рано</string>
 </resources>

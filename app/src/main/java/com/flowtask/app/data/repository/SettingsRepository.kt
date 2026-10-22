@@ -8,10 +8,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class SettingsRepository(
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val context: Context? = null
 ) {
     constructor(context: Context) : this(
-        context.getSharedPreferences("flowtask_settings", Context.MODE_PRIVATE)
+        context.getSharedPreferences("flowtask_settings", Context.MODE_PRIVATE),
+        context.applicationContext
     )
 
     private val _language = MutableStateFlow(prefs.getString(KEY_LANGUAGE, "bg") ?: "bg")
@@ -44,6 +46,11 @@ class SettingsRepository(
         prefs.getBoolean(KEY_CALENDAR_FILTERS_EXPANDED, false)
     )
     val calendarFiltersExpanded: StateFlow<Boolean> = _calendarFiltersExpanded.asStateFlow()
+
+    private val _reminderAdvanceMinutes = MutableStateFlow(
+        prefs.getInt(KEY_REMINDER_ADVANCE_MINUTES, 0)
+    )
+    val reminderAdvanceMinutes: StateFlow<Int> = _reminderAdvanceMinutes.asStateFlow()
 
     fun setLanguage(lang: String) {
         _language.value = lang
@@ -91,6 +98,11 @@ class SettingsRepository(
         prefs.edit().putBoolean(KEY_CALENDAR_FILTERS_EXPANDED, expanded).apply()
     }
 
+    fun setReminderAdvanceMinutes(minutes: Int) {
+        _reminderAdvanceMinutes.value = minutes
+        prefs.edit().putInt(KEY_REMINDER_ADVANCE_MINUTES, minutes).apply()
+    }
+
     fun resetScreenOrder() {
         setScreenOrder(listOf(0, 1, 2, 3))
     }
@@ -114,6 +126,7 @@ class SettingsRepository(
     companion object {
         const val KEY_PROGRAM_TASKS_EVERYWHERE = "key_program_tasks_everywhere"
         const val KEY_CALENDAR_FILTERS_EXPANDED = "key_calendar_filters_expanded"
+        const val KEY_REMINDER_ADVANCE_MINUTES = "key_reminder_advance_minutes"
         private const val KEY_LANGUAGE = "key_language"
         private const val KEY_ACCENT_COLOR = "key_accent_color"
         private const val KEY_THEME_MODE = "key_theme_mode"

@@ -4,7 +4,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
+        android:name=".FlowTaskApp"
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -90,6 +97,29 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/program_routines_widget_info" />
+        </receiver>
+
+        <!-- Task Reminder Broadcast Receiver for exact alarms and interactive notification actions -->
+        <receiver
+            android:name=".reminder.TaskReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.flowtask.app.reminder.ACTION_SHOW_REMINDER" />
+                <action android:name="com.flowtask.app.reminder.ACTION_COMPLETE_TASK" />
+                <action android:name="com.flowtask.app.reminder.ACTION_TOGGLE_SUBTASK" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Boot and App Update Receiver to Reschedule Exact Reminders -->
+        <receiver
+            android:name=".reminder.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
         </receiver>
 
         <provider

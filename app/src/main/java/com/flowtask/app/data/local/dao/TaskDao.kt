@@ -89,6 +89,18 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :taskId LIMIT 1")
     suspend fun getTaskById(taskId: Long): TaskWithSubTasks?
 
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE id = :taskId LIMIT 1")
+    fun getTaskByIdSync(taskId: Long): TaskWithSubTasks?
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE isCompleted = 0 AND dueTimeMinutes IS NOT NULL")
+    fun getPendingTimedTasksSync(): List<TaskWithSubTasks>
+
+    @Transaction
+    @Query("SELECT * FROM tasks WHERE isCompleted = 0 AND dueTimeMinutes IS NOT NULL")
+    suspend fun getPendingTimedTasks(): List<TaskWithSubTasks>
+
     @Query("SELECT DISTINCT dueDateMillis FROM tasks WHERE dueDateMillis IS NOT NULL AND isCompleted = 0")
     fun getActiveTaskDueDatesFlow(): Flow<List<Long>>
 

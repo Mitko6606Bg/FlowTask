@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Reorder
@@ -127,6 +128,7 @@ fun SettingsBottomSheet(
     val isDark = LocalDarkTheme.current
     val screenOrder by viewModel.screenOrder.collectAsStateWithLifecycle()
     val currentProgramTasksEverywhere by viewModel.programTasksEverywhere.collectAsStateWithLifecycle()
+    val reminderAdvanceMinutes by viewModel.reminderAdvanceMinutes.collectAsStateWithLifecycle()
     val semesterConfig by (taskViewModel?.semesterConfig ?: remember { MutableStateFlow(SemesterConfig()) }).collectAsStateWithLifecycle()
     var showStartDatePicker by remember { mutableStateOf(false) }
     var showEndDatePicker by remember { mutableStateOf(false) }
@@ -825,6 +827,89 @@ fun SettingsBottomSheet(
                                         )
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        item(key = "section_reminders") {
+            // SECTION: Time Reminders & Advance Notice
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                color = SurfaceContainerLow,
+                border = androidx.compose.foundation.BorderStroke(1.dp, OutlineSubtle.copy(alpha = 0.7f))
+            ) {
+                Column(modifier = Modifier.padding(18.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.NotificationsActive,
+                            contentDescription = null,
+                            tint = currentAccent,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = strings.settingsRemindersTitle,
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        text = strings.settingsRemindersDesc,
+                        style = MaterialTheme.typography.bodySmall.copy(color = TextSecondary, fontSize = 12.sp)
+                    )
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Text(
+                        text = strings.settingsRemindersAdvanceTitle,
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, color = TextPrimary)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val advanceOptions = listOf(
+                        0 to strings.settingsRemindersExact,
+                        5 to strings.settingsReminders5min,
+                        10 to strings.settingsReminders10min,
+                        15 to strings.settingsReminders15min
+                    )
+
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        advanceOptions.forEachIndexed { index, (minutes, label) ->
+                            val isSelected = reminderAdvanceMinutes == minutes
+                            SegmentedButton(
+                                selected = isSelected,
+                                onClick = { viewModel.setReminderAdvanceMinutes(minutes) },
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = advanceOptions.size),
+                                colors = SegmentedButtonDefaults.colors(
+                                    activeContainerColor = currentAccent.copy(alpha = 0.15f),
+                                    activeContentColor = currentAccent,
+                                    activeBorderColor = currentAccent,
+                                    inactiveContainerColor = SurfaceContainerLowest,
+                                    inactiveContentColor = TextSecondary,
+                                    inactiveBorderColor = OutlineSubtle.copy(alpha = 0.7f)
+                                ),
+                                border = SegmentedButtonDefaults.borderStroke(
+                                    color = if (isSelected) currentAccent else OutlineSubtle.copy(alpha = 0.7f),
+                                    width = 1.dp
+                                )
+                            ) {
+                                Text(
+                                    text = label,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                        fontSize = 11.sp
+                                    ),
+                                    maxLines = 1
+                                )
                             }
                         }
                     }

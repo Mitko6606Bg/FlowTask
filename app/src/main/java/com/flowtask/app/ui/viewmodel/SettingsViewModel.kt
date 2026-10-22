@@ -21,6 +21,7 @@ class SettingsViewModel(
     val dynamicColorStyle: StateFlow<DynamicColorStyle> = repository.dynamicColorStyle
     val screenOrder: StateFlow<List<Int>> = repository.screenOrder
     val programTasksEverywhere: StateFlow<Boolean> = repository.programTasksEverywhere
+    val reminderAdvanceMinutes: StateFlow<Int> = repository.reminderAdvanceMinutes
 
     private val _isSettingsSheetVisible = MutableStateFlow(false)
     val isSettingsSheetVisible: StateFlow<Boolean> = _isSettingsSheetVisible.asStateFlow()
@@ -66,6 +67,12 @@ class SettingsViewModel(
     fun setProgramTasksEverywhere(everywhere: Boolean) {
         viewModelScope.launch {
             repository.setProgramTasksEverywhere(everywhere)
+        }
+    }
+
+    fun setReminderAdvanceMinutes(minutes: Int) {
+        viewModelScope.launch {
+            repository.setReminderAdvanceMinutes(minutes)
         }
     }
 

@@ -132,6 +132,16 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.updateSubTaskCompletion(subTaskId, isCompleted)
     }
 
+    suspend fun getTaskById(taskId: Long): TaskWithSubTasks? = taskDao.getTaskById(taskId)
+
+    fun getTaskByIdSync(taskId: Long): TaskWithSubTasks? = taskDao.getTaskByIdSync(taskId)
+
+    suspend fun getSubTaskById(subTaskId: Long): SubTaskEntity? = taskDao.getSubTaskById(subTaskId)
+
+    fun getPendingTimedTasksSync(): List<TaskWithSubTasks> = taskDao.getPendingTimedTasksSync()
+
+    suspend fun getPendingTimedTasks(): List<TaskWithSubTasks> = taskDao.getPendingTimedTasks()
+
     suspend fun deleteTask(taskId: Long) {
         taskDao.deleteTaskById(taskId)
     }

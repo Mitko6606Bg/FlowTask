@@ -16,6 +16,7 @@ import com.flowtask.app.data.repository.TaskRepository
 import com.flowtask.app.util.DateTimeUtils
 import com.flowtask.app.util.SemesterUtils
 import java.util.Calendar
+import com.flowtask.app.reminder.TaskReminderScheduler
 import com.flowtask.app.widget.TodayWidgetProvider
 import com.flowtask.app.widget.ProgramRoutinesWidgetProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -239,7 +240,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         if (explanation.isBlank()) return
 
         viewModelScope.launch {
-            if (id == null || id == 0L) {
+            val savedTaskId: Long = if (id == null || id == 0L) {
                 repository.insertTask(
                     explanation = explanation,
                     dueDateMillis = dueDateMillis,
@@ -266,7 +267,19 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 }
                 repository.updateTask(updatedTask, subTaskEntities)
+                id
             }
+
+            val taskWithSubs = repository.getTaskById(savedTaskId)
+            if (taskWithSubs != null) {
+                if (taskWithSubs.task.dueTimeMinutes != null && !taskWithSubs.task.isCompleted) {
+                    TaskReminderScheduler.scheduleOrShowReminder(getApplication(), taskWithSubs)
+                } else {
+                    TaskReminderScheduler.dismissNotification(getApplication(), savedTaskId)
+                    TaskReminderScheduler.cancelReminder(getApplication(), savedTaskId)
+                }
+            }
+
             TodayWidgetProvider.updateAllWidgets(getApplication())
             closeTaskSheet()
         }
@@ -275,6 +288,15 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleTaskCompletion(taskId: Long, isCompleted: Boolean) {
         viewModelScope.launch {
             repository.toggleTaskCompletion(taskId, isCompleted)
+            if (isCompleted) {
+                TaskReminderScheduler.dismissNotification(getApplication(), taskId)
+                TaskReminderScheduler.cancelReminder(getApplication(), taskId)
+            } else {
+                val taskWithSubs = repository.getTaskById(taskId)
+                if (taskWithSubs != null && taskWithSubs.task.dueTimeMinutes != null) {
+                    TaskReminderScheduler.scheduleOrShowReminder(getApplication(), taskWithSubs)
+                }
+            }
             TodayWidgetProvider.updateAllWidgets(getApplication())
         }
     }
@@ -282,6 +304,21 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleSubTaskCompletion(subTaskId: Long, isCompleted: Boolean) {
         viewModelScope.launch {
             repository.toggleSubTaskCompletion(subTaskId, isCompleted)
+            val subTask = repository.getSubTaskById(subTaskId)
+            if (subTask != null) {
+                val taskWithSubs = repository.getTaskById(subTask.taskId)
+                if (taskWithSubs != null) {
+                    val allCompleted = taskWithSubs.subTasks.isNotEmpty() &&
+                            taskWithSubs.subTasks.all { it.isCompleted }
+                    if (allCompleted) {
+                        repository.toggleTaskCompletion(taskWithSubs.task.id, true)
+                        TaskReminderScheduler.dismissNotification(getApplication(), taskWithSubs.task.id)
+                        TaskReminderScheduler.cancelReminder(getApplication(), taskWithSubs.task.id)
+                    } else if (taskWithSubs.task.dueTimeMinutes != null) {
+                        TaskReminderScheduler.updateNotificationIfActive(getApplication(), taskWithSubs)
+                    }
+                }
+            }
             TodayWidgetProvider.updateAllWidgets(getApplication())
         }
     }
@@ -289,6 +326,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun addSubTask(taskId: Long, text: String) {
         viewModelScope.launch {
             repository.addSubTask(taskId, text)
+            val taskWithSubs = repository.getTaskById(taskId)
+            if (taskWithSubs != null && taskWithSubs.task.dueTimeMinutes != null) {
+                TaskReminderScheduler.updateNotificationIfActive(getApplication(), taskWithSubs)
+            }
             TodayWidgetProvider.updateAllWidgets(getApplication())
         }
     }
@@ -296,13 +337,32 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteTask(taskId: Long) {
         viewModelScope.launch {
             repository.deleteTask(taskId)
+            TaskReminderScheduler.dismissNotification(getApplication(), taskId)
+            TaskReminderScheduler.cancelReminder(getApplication(), taskId)
             TodayWidgetProvider.updateAllWidgets(getApplication())
         }
     }
 
     fun deleteSubTask(subTaskId: Long) {
         viewModelScope.launch {
+            val subTask = repository.getSubTaskById(subTaskId)
+            val taskId = subTask?.taskId
             repository.deleteSubTask(subTaskId)
+            if (taskId != null) {
+                val taskWithSubs = repository.getTaskById(taskId)
+                if (taskWithSubs != null) {
+                    val allCompleted = taskWithSubs.subTasks.isNotEmpty() &&
+                            taskWithSubs.subTasks.all { it.isCompleted }
+                    if (allCompleted) {
+                        repository.toggleTaskCompletion(taskWithSubs.task.id, true)
+                        TaskReminderScheduler.dismissNotification(getApplication(), taskWithSubs.task.id)
+                        TaskReminderScheduler.cancelReminder(getApplication(), taskWithSubs.task.id)
+                    } else if (taskWithSubs.task.dueTimeMinutes != null) {
+                        TaskReminderScheduler.updateNotificationIfActive(getApplication(), taskWithSubs)
+                    }
+                }
+            }
+            TodayWidgetProvider.updateAllWidgets(getApplication())
         }
     }
 

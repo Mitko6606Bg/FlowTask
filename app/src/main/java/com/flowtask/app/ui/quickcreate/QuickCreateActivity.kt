@@ -115,6 +115,7 @@ import com.flowtask.app.data.local.entity.InstantSnapEntity
 import com.flowtask.app.data.local.entity.SubTaskEntity
 import com.flowtask.app.data.local.entity.TaskEntity
 import com.flowtask.app.data.repository.SettingsRepository
+import com.flowtask.app.reminder.TaskReminderScheduler
 import com.flowtask.app.ui.theme.DockBarColor
 import com.flowtask.app.ui.theme.FlowTaskTheme
 import com.flowtask.app.ui.theme.LocalAccentColor
@@ -825,6 +826,12 @@ fun QuickCreateFloatingCardHost(
                                                     )
                                                 }
                                                 db.taskDao().insertSubTasks(subs)
+                                            }
+                                            if (task.dueTimeMinutes != null) {
+                                                val taskWithSubs = db.taskDao().getTaskById(taskId)
+                                                if (taskWithSubs != null) {
+                                                    TaskReminderScheduler.scheduleOrShowReminder(context, taskWithSubs)
+                                                }
                                             }
                                             TodayWidgetProvider.updateAllWidgets(context)
                                             withContext(Dispatchers.Main) {

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.flowtask.app.MainActivity
 import com.flowtask.app.R
 import com.flowtask.app.data.local.AppDatabase
+import com.flowtask.app.reminder.TaskReminderScheduler
 import com.flowtask.app.data.repository.SemesterRepository
 import com.flowtask.app.ui.quickcreate.QuickCreateActivity
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +53,15 @@ class TodayWidgetProvider : AppWidgetProvider() {
                             val newCompletedState = !isCompleted
                             val completedAt = if (newCompletedState) System.currentTimeMillis() else null
                             db.taskDao().updateTaskCompletion(taskId, newCompletedState, completedAt)
+                            if (newCompletedState) {
+                                TaskReminderScheduler.dismissNotification(context, taskId)
+                                TaskReminderScheduler.cancelReminder(context, taskId)
+                            } else {
+                                val taskWithSubs = db.taskDao().getTaskById(taskId)
+                                if (taskWithSubs != null && taskWithSubs.task.dueTimeMinutes != null) {
+                                    TaskReminderScheduler.scheduleOrShowReminder(context, taskWithSubs)
+                                }
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
@@ -71,6 +81,21 @@ class TodayWidgetProvider : AppWidgetProvider() {
                             val db = AppDatabase.getInstance(context)
                             val newCompletedState = !isCompleted
                             db.taskDao().updateSubTaskCompletion(subTaskId, newCompletedState)
+                            val subTask = db.taskDao().getSubTaskById(subTaskId)
+                            if (subTask != null) {
+                                val taskWithSubs = db.taskDao().getTaskById(subTask.taskId)
+                                if (taskWithSubs != null) {
+                                    val allCompleted = taskWithSubs.subTasks.isNotEmpty() &&
+                                            taskWithSubs.subTasks.all { it.isCompleted }
+                                    if (allCompleted) {
+                                        db.taskDao().updateTaskCompletion(taskWithSubs.task.id, true, System.currentTimeMillis())
+                                        TaskReminderScheduler.dismissNotification(context, taskWithSubs.task.id)
+                                        TaskReminderScheduler.cancelReminder(context, taskWithSubs.task.id)
+                                    } else if (taskWithSubs.task.dueTimeMinutes != null) {
+                                        TaskReminderScheduler.updateNotificationIfActive(context, taskWithSubs)
+                                    }
+                                }
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
