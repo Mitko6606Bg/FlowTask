@@ -42,6 +42,9 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.flowtask.app.widget.ACTION_TOGGLE_TASK" />
+                <action android:name="com.flowtask.app.widget.ACTION_TOGGLE_SUBTASK" />
+                <action android:name="com.flowtask.app.widget.ACTION_TOGGLE_EXPAND_TASK" />
+                <action android:name="com.flowtask.app.widget.ACTION_SELECT_LAYER" />
                 <action android:name="com.flowtask.app.widget.ACTION_OPEN_TASK" />
                 <action android:name="com.flowtask.app.widget.ACTION_UPDATE_WIDGET" />
             </intent-filter>

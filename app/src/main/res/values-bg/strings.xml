@@ -9,6 +9,8 @@
     <string name="widget_create_task">Създаване</string>
     <string name="widget_remaining_format">%1$d оставащи</string>
     <string name="widget_all_done">Готово ✓</string>
+    <string name="widget_layer_all">Всички</string>
+    <string name="widget_empty_layer_format">Няма задачи за %1$s</string>
     <string name="widget_program_routines_name">FlowTask Програма Графици</string>
     <string name="widget_program_routines_description">Показва следващите 3 графика за избрана програма в стила на Google stock apps.</string>
     <string name="widget_program_routines_title">График на програма</string>

@@ -8,6 +8,8 @@
     <string name="widget_create_task">Create</string>
     <string name="widget_remaining_format">%1$d left</string>
     <string name="widget_all_done">All done ✓</string>
+    <string name="widget_layer_all">All</string>
+    <string name="widget_empty_layer_format">No tasks for %1$s</string>
     <string name="widget_program_routines_name">FlowTask Program Routines</string>
     <string name="widget_program_routines_description">Displays the next 3 routines for a selected program in Google stock style.</string>
     <string name="widget_program_routines_title">Program Routines</string>

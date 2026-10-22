@@ -4,46 +4,385 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/widget_item_background"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingHorizontal="12dp"
-    android:paddingVertical="9dp">
+    android:orientation="vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp">
 
-    <!-- Interactive Checkbox -->
-    <ImageView
-        android:id="@+id/widget_item_checkbox"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_widget_circle_outline" />
-
-    <!-- Text & Meta Column -->
+    <!-- Main Task Row -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/widget_item_main_row"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/widget_item_text"
+        <!-- Interactive Checkbox (22dp) -->
+        <ImageView
+            android:id="@+id/widget_item_checkbox"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_circle_outline" />
+
+        <!-- Text & Meta Column -->
+        <LinearLayout
+            android:id="@+id/widget_item_text_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/widget_item_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="11sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- Subtask Progress Dropdown Pill (Matches SubtaskProgressChip in TaskCard) -->
+        <LinearLayout
+            android:id="@+id/widget_item_subtask_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
+            android:minHeight="26dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/widget_subtask_chip_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="9dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_item_subtask_chip_check"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_check" />
+
+            <TextView
+                android:id="@+id/widget_item_subtask_chip_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="sans-serif-bold"
+                android:text="1/3"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/widget_item_subtask_chip_icon"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="3dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_chevron_down" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Expandable Subtasks Section (Inside the SAME Card Container!) -->
+    <LinearLayout
+        android:id="@+id/widget_subtasks_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="32dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Subtle Divider Line (matches app HorizontalDivider) -->
+        <ImageView
+            android:id="@+id/widget_subtasks_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/widget_divider"
+            android:contentDescription="@null" />
+
+        <!-- Static Subtask Slot 0 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_0"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 1 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 2 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 3 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 4 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 5 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_5"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 6 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_6"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Static Subtask Slot 7 -->
+        <LinearLayout
+            android:id="@+id/widget_subtask_row_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/widget_subtask_check_7"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_widget_circle_outline" />
+
+            <TextView
+                android:id="@+id/widget_subtask_text_7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- More subtasks indicator if > 8 -->
+        <TextView
+            android:id="@+id/widget_subtask_more_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="2dp"
             android:fontFamily="sans-serif-medium"
-            android:maxLines="2"
-            android:textColor="@color/widget_text_primary"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/widget_item_meta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/widget_text_muted"
-            android:textSize="11sp"
+            android:textColor="@color/widget_accent"
+            android:textSize="12sp"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

@@ -98,6 +98,9 @@ interface TaskDao {
     @Query("SELECT DISTINCT layer FROM tasks WHERE layer IS NOT NULL AND TRIM(layer) != '' ORDER BY layer ASC")
     fun getDistinctLayersFlow(): Flow<List<String>>
 
+    @Query("SELECT DISTINCT layer FROM tasks WHERE layer IS NOT NULL AND TRIM(layer) != '' ORDER BY layer ASC")
+    fun getDistinctLayersSync(): List<String>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: TaskEntity): Long
 
